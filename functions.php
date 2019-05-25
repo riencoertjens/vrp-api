@@ -47,6 +47,7 @@ function wpforms_custom_capability( $cap ) {
 }
 add_filter( 'wpforms_manage_cap', 'wpforms_custom_capability' );
 
+// create custom post type for 'registratie'
 function registratie_cpt() {
 	$args = array(
 			'labels'  => array(
@@ -60,14 +61,15 @@ function registratie_cpt() {
 
 } add_action( 'init', 'registratie_cpt' );
 
-add_action('admin_menu', 'my_menu');
 
+// create sub menu page for registraties in activity tab
 function my_menu() {
 	add_submenu_page('edit.php?post_type=activity', 'Registraties', 'registraties', 'unfiltered_html', 'registraties', 'submissions_page_display' );
-}
+} add_action('admin_menu', 'my_menu');
 
+// form submissions page
 function submissions_page_display() {
-
+	// if no activity is set, show all activities
 	if (isset($_REQUEST['activity_id'])){
 
 		$activity = get_post($_REQUEST['activity_id']);
@@ -82,11 +84,15 @@ function submissions_page_display() {
 		?>
 			<div class="wrap">
 				<h1>registraties: <a href="post.php?action=edit&post=<?=$activity->ID;?>"><?=$activity->post_title;?></a></h1>
-				<a href="edit.php?post_type=activity&page=registraties">naar overzicht</a>
+				<a href="edit.php?post_type=activity&page=registraties">terug naar overzicht</a><br/>
+				<!-- <a href="">exporteer csv</a> -->
 				<?php $submissionsListTable->display(); ?>
+				
+
 			</div>
 		<?php
 
+	// if activity is set, show submissions
 	} else {
 
 		if( ! class_exists( 'Submissions_List_Table' ) ) {
