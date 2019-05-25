@@ -16,19 +16,12 @@ class Submissions_Overview_List_Table extends WP_List_Table {
     ));
   }
 
-  // function column_cb($item){
-  //   return sprintf(
-  //     '<input type="checkbox" name="%1$s" value="%2$s" />',
-  //     /*$1%s*/ $this->_args['singular'],  //Let's simply repurpose the table's singular label ("movie")
-  //     /*$2%s*/ $item->ID                //The value of the checkbox should be the record's id
-  //   );
-  // }
-
   function get_columns(){
     $columns = array(
       // 'cb' => '<input type="checkbox" />', //Render a checkbox instead of text
       'post_title' => 'Title',
-      'post_date' => 'Date'
+      'count' => 'Registraties',
+      'close_date' => 'Einde datum'
     );
     return $columns;
   }
@@ -36,13 +29,34 @@ class Submissions_Overview_List_Table extends WP_List_Table {
   function get_sortable_columns() {
     $sortable_columns = array(
       'post_title' => array('title',false),     //true means it's already sorted
-      'post_date' => array('rating',false)
+      // 'close_date' => array('close_date',false)
     );
     return $sortable_columns;
   }
 
   function column_default($item, $column_name){
-    return '<a href="edit.php?post_type=activity&page=registraties&activity_id='.$item->ID.'">'.$item->$column_name.'</a>';
+    if ($column_name == 'count'){
+      $args = array(
+        'post_type' => 'registratie',
+        'meta_query' => array(
+          array(
+            'key' => 'activity_id',
+            'value' => $item->ID,
+            )
+          )
+      );
+
+      $query = new WP_Query($args);
+
+      $label = $query->found_posts;
+      $places = get_field('places', $item->ID);
+      if ($places > 0){ $label .= '/'.$places;}
+      return $label;
+    } elseif ($column_name == 'close_date'){
+      return get_field('close_date', $item->ID);
+    } else {
+      return '<a href="edit.php?post_type=activity&page=registraties&activity_id='.$item->ID.'">'.$item->$column_name.'</a>';
+    }
   }
 
   function prepare_items() {
@@ -57,6 +71,8 @@ class Submissions_Overview_List_Table extends WP_List_Table {
 
     $data = get_posts(array(
       'post_type' => 'activity',
+      'meta_key'		=> 'hasform',
+      'meta_value'	=> true,
       'orderby' => (!empty($_REQUEST['orderby'])) ? $_REQUEST['orderby'] : 'title', //If no sort, default to title
       'order' => (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc' //If no order, default to asc
     ));
