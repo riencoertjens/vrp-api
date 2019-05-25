@@ -113,7 +113,7 @@ class Submissions_List_Table extends WP_List_Table {
       'paged' => $current_page,
       'orderby' => 'post_date',
       'order' => 'asc'
-      );
+    );
       
     $query = new WP_Query( $args );
     $data = $query->posts;
