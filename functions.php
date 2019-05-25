@@ -155,7 +155,7 @@ function vrp_form_submission( WP_REST_Request $request ) {
 
 	$json_data = $request->get_json_params();
 	$activity = get_post($json_data['data']['activity_id']);
-	$data = wp_json_encode($json_data['data']);
+	$data = wp_slash(wp_json_encode($json_data['data']));
 
 	$postarr = array(
 		'post_title' => $json_data['email'],
