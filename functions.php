@@ -144,6 +144,21 @@ function activity_submission_count( $data ) {
 
 // add rest route to add form submission
 add_action('rest_api_init', function () {
+
+	register_job_listing_meta(array(
+		"_filled" => array( // Validate and sanitize the meta value.
+			// Note: currently (4.7) one of 'string', 'boolean', 'integer',
+			// 'number' must be used as 'type'. The default is 'string'.
+			'type'         => 'boolean',
+			// Shown in the schema for the meta key.
+			'description'  => 'position filled',
+			// Return a single value of the type.
+			'single'       => true,
+			// Show in the WP REST API response. Default: false.
+			'show_in_rest' => true,
+		)
+	));
+
 	register_rest_route( 'vrp-api/v1', 'form-submission',array(
 		'methods'  => WP_REST_Server::CREATABLE,
 		'callback' => 'vrp_form_submission'
@@ -174,4 +189,10 @@ function vrp_form_submission( WP_REST_Request $request ) {
 	$response->set_status(200);
 
 	return $response;
+}
+
+function register_job_listing_meta($fields){
+	foreach ($fields as $meta_key => $args) {
+		register_meta( "post", $meta_key, $args );
+	}
 }
