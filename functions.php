@@ -145,6 +145,11 @@ function activity_submission_count( $data ) {
 // add rest route to add form submission
 add_action('rest_api_init', function () {
 
+	register_rest_route( 'vrp-api/v1', 'form-submission',array(
+		'methods'  => WP_REST_Server::CREATABLE,
+		'callback' => 'vrp_form_submission'
+	));
+
 	register_job_listing_meta(array(
 		"_filled" => array( // Validate and sanitize the meta value.
 			// Note: currently (4.7) one of 'string', 'boolean', 'integer',
@@ -156,13 +161,57 @@ add_action('rest_api_init', function () {
 			'single'       => true,
 			// Show in the WP REST API response. Default: false.
 			'show_in_rest' => true,
-		)
+		),
+		"_featured" => array(
+			'type'         => 'boolean',
+			'description'  => 'job listing featured',
+			'single'       => true,
+			'show_in_rest' => true,
+		),
+		"_job_location" => array(
+			'type'         => 'string',
+			'description'  => 'job location',
+			'single'       => true,
+			'show_in_rest' => true,
+		),
+		"_application" => array(
+			'type'         => 'string',
+			'description'  => 'application details',
+			'single'       => true,
+			'show_in_rest' => true,
+		),
+		"_company_name" => array(
+			'type'         => 'string',
+			'description'  => 'company name',
+			'single'       => true,
+			'show_in_rest' => true,
+		),
+		"_company_website" => array(
+			'type'         => 'string',
+			'description'  => 'company website',
+			'single'       => true,
+			'show_in_rest' => true,
+		),
+		"_company_tagline" => array(
+			'type'         => 'string',
+			'description'  => 'company tagline',
+			'single'       => true,
+			'show_in_rest' => true,
+		),
+		"_company_video" => array(
+			'type'         => 'string',
+			'description'  => 'company video',
+			'single'       => true,
+			'show_in_rest' => true,
+		),
+		"_company_twitter" => array(
+			'type'         => 'string',
+			'description'  => 'company twitter',
+			'single'       => true,
+			'show_in_rest' => true,
+		),
 	));
 
-	register_rest_route( 'vrp-api/v1', 'form-submission',array(
-		'methods'  => WP_REST_Server::CREATABLE,
-		'callback' => 'vrp_form_submission'
-	));
 });
 
 // form submission function
