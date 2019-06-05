@@ -70,29 +70,30 @@ function update_prijs_post_category( $post_id ) {
 } add_action('acf/save_post', 'update_prijs_post_category', 15, 1);
 
 
-/*
- * Add columns to artikels post list
- */
-function add_acf_columns ( $columns ) {
+// Add Ruimte column to artikels post list
+function add_ruimte_column ( $columns ) {
 	return array_merge ( $columns, array ( 
 		'ruimte_magazine' => __ ( 'Ruimte' ),
-	) );
-} add_filter ( 'manage_ruimte_artikel_posts_columns', 'add_acf_columns' );
+	));
+} add_filter ( 'manage_ruimte_artikel_posts_columns', 'add_ruimte_column' );
 
-function ruimte_artikel_custom_column ( $column, $post_id ) {
+// Add value to artikels Ruimte column
+function ruimte_custom_column ( $column, $post_id ) {
 	switch ( $column ) {
 		case 'ruimte_magazine':
 			echo get_post(get_post_meta($post_id, 'ruimte', true))->post_title;
 			break;
 	}
-} add_action ( 'manage_ruimte_artikel_posts_custom_column', 'ruimte_artikel_custom_column', 35, 2 );
+} add_action ( 'manage_ruimte_artikel_posts_custom_column', 'ruimte_custom_column', 35, 2 );
 
-function sort_columns( $columns ) {
+// Add sort to artikels Ruimte column
+function sort_ruimte_column( $columns ) {
 	$columns['ruimte_magazine'] = 'ruimte_magazine';
 	return $columns;
-} add_filter( 'manage_edit-ruimte_artikel_sortable_columns', 'sort_columns' );
+} add_filter( 'manage_edit-ruimte_artikel_sortable_columns', 'sort_ruimte_column' );
 
-function add_filter_select($post_type) {
+// Add filter select to artikels posts list
+function filter_ruimte_select($post_type) {
 	if ( 'ruimte_artikel' !== $post_type ) return; //check to make sure this is your cpt
 	$arg=array(
 		'show_option_none' => 'Alle uitgaves',
@@ -103,8 +104,9 @@ function add_filter_select($post_type) {
 		'selected' => $_GET['ruimte_nr'],
 	);
 	wp_dropdown_pages($arg);
-} add_action( 'restrict_manage_posts', 'add_filter_select' );
+} add_action( 'restrict_manage_posts', 'filter_ruimte_select' );
 
+// Add filter functionality to artikels posts list
 function filter_ruimte_artikels( $query ){
     global $pagenow;
     $type = 'post';
@@ -116,6 +118,74 @@ function filter_ruimte_artikels( $query ){
         $query->query_vars['meta_value'] = $_GET['ruimte_nr'];
     }
 } add_filter( 'parse_query', 'filter_ruimte_artikels' );
+
+
+// Add Prijs column to prijs post list
+function add_prijs_column ( $columns ) {
+	return array_merge ( $columns, array ( 
+		'prijs' => __ ( 'Prijs' ),
+	));
+} add_filter ( 'manage_prijs_posts_columns', 'add_prijs_column' );
+
+// Add value to prijs column
+function prijs_custom_column ( $column, $post_id ) {
+	switch ( $column ) {
+		case 'prijs':
+			echo (get_post_meta($post_id, 'prijs', true));
+			break;
+	}
+} add_action ( 'manage_prijs_posts_custom_column', 'prijs_custom_column', 35, 2 );
+
+// Add sort to prijs column
+function sort_prijs_column( $columns ) {
+	$columns['prijs'] = 'prijs';
+	return $columns;
+} add_filter( 'manage_edit-prijs_sortable_columns', 'sort_prijs_column' );
+
+// Add filter select to prijs posts list
+function filter_prijs_select($post_type) {
+	if ( 'prijs' !== $post_type ) return; //check to make sure this is your cpt
+	$prijzen = array(
+		"openruimtebeker" => "Openruimtebeker",
+		"vrp-afstudeerprijs" => "VRP Afstudeerprijs",
+		"vrp-planningsprijs" => "VRP Planningsprijs"
+	);
+
+	?>
+	<label for="prijs_type" class="screen-reader-text">Filter per prijs</label>
+	<select name="prijs_type" id="prijs" >
+		<option value="0">Alle prijzen</option>
+		<?php
+			$i = 0;
+			foreach ($prijzen as $key => $value) {
+				?><option class="level-0" value="<?= $key ?>" <?php if ($key == $_GET['prijs_type']) echo 'selected'; ?>><?= $value ?></option><?php
+				$i++;
+			}
+		?>
+	</select>
+	<?php
+} add_action( 'restrict_manage_posts', 'filter_prijs_select' );
+
+// Add filter functionality to prijs post list
+function filter_prijzen_list( $query ){
+    global $pagenow;
+    $type = 'post';
+    if (isset($_GET['post_type'])) {
+        $type = $_GET['post_type'];
+    }
+    if ( 'prijs' == $type && is_admin() && $pagenow=='edit.php' && isset($_GET['prijs_type']) && $_GET['prijs_type'] != '') {
+        $query->query_vars['meta_key'] = 'prijs';
+        $query->query_vars['meta_value'] = $_GET['prijs_type'];
+    }
+} add_filter( 'parse_query', 'filter_prijzen_list' );
+
+
+
+
+
+
+
+
 
 // give form edit permission to editor
 function wpforms_custom_capability( $cap ) {
