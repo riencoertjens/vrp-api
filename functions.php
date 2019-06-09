@@ -11,6 +11,8 @@ function my_acf_google_map_api( $api ){
 	return $api;
 } add_filter('acf/fields/google_map/api', 'my_acf_google_map_api');
 
+add_image_size( 'hero-size', 1200, 630, true );
+
 // refresh site on post update
 if ( $_SERVER["SERVER_ADDR"] !== '127.0.0.1' ) {//don't update on local env
 
