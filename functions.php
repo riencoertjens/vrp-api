@@ -11,7 +11,8 @@ function my_acf_google_map_api( $api ){
 	return $api;
 } add_filter('acf/fields/google_map/api', 'my_acf_google_map_api');
 
-add_image_size( 'hero-size', 1200, 630, true );
+// add_image_size( 'hero-image', 1200, 630, true );
+// add_image_size( 'post-list-image', 300, 200, true );
 
 // refresh site on post update
 if ( $_SERVER["SERVER_ADDR"] !== '127.0.0.1' ) {//don't update on local env
@@ -265,6 +266,17 @@ function submissions_page_display() {
 
 // add rest route to get registration count and limit
 add_action('rest_api_init', function () {
+	
+	register_rest_field(
+		'attachment',
+		'smartcrop_image_focus',
+		array(
+			'get_callback'  => function($post) {
+				return get_post_meta($post['id'], "_wpsmartcrop_image_focus");
+			}
+		)
+	);
+
 	register_rest_route( 'vrp-api/v1', 'activity/submission-count/(?P<id>\d+)',array(
 		'methods'  => WP_REST_Server::READABLE,
 		'callback' => 'activity_submission_count'
