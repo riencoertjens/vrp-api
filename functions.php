@@ -280,17 +280,19 @@ add_action('rest_api_init', function () {
 
 	register_rest_field(
 		'page',
-		'featured_post_media',
+		'featured_posts',
 		array(
 			'get_callback'  => function($page) {
 				if ($page['slug'] === "home"){
 					$posts = array();
 					foreach (get_field('in_de_kijker',$page['id']) as $post) {
-						$posts[] = array(
-							'post_id' => $post->ID,
-							'media_id' => get_post_thumbnail_id($post->ID)
-						);
+						$media_id = get_post_thumbnail_id($post->ID);
+
+						$post->featured_media = $media_id ? get_post($media_id) : 0;
+						
+						$posts[] = $post;
 					}
+					// error_log(json_encode($posts, JSON_PRETTY_PRINT));
 					return $posts;
 				} else {
 					return null;
