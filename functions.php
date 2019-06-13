@@ -267,6 +267,7 @@ function submissions_page_display() {
 // add rest route to get registration count and limit
 add_action('rest_api_init', function () {
 	
+	
 	register_rest_field(
 		'attachment',
 		'smartcrop_image_focus',
@@ -277,11 +278,42 @@ add_action('rest_api_init', function () {
 		)
 	);
 
+	register_rest_field(
+		'page',
+		'featured_post_media',
+		array(
+			'get_callback'  => function($page) {
+				if ($page['slug'] === "home"){
+					
+					// error_log(json_encode(get_field('in_de_kijker',$page['id']), JSON_PRETTY_PRINT));
+					// error_log(json_encode($page['id'], JSON_PRETTY_PRINT));
+					
+					$posts = array();
+					foreach (get_field('in_de_kijker',$page['id']) as $post) {
+						// error_log(json_encode(get_post_thumbnail_id($post->ID), JSON_PRETTY_PRINT));
+						$posts[$post->ID] = get_post_thumbnail_id($post->ID);
+					}
+					
+					error_log(json_encode($posts, JSON_PRETTY_PRINT));
+					
+					return $posts;
+				} else {
+
+					return null;
+				}
+			}
+		)
+	);
+
 	register_rest_route( 'vrp-api/v1', 'activity/submission-count/(?P<id>\d+)',array(
 		'methods'  => WP_REST_Server::READABLE,
 		'callback' => 'activity_submission_count'
 	));
 });
+
+
+
+
 // check+return registration count and limit
 function activity_submission_count( $data ) {
 	$activity_id = $data['id'];
