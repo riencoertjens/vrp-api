@@ -284,21 +284,15 @@ add_action('rest_api_init', function () {
 		array(
 			'get_callback'  => function($page) {
 				if ($page['slug'] === "home"){
-					
-					// error_log(json_encode(get_field('in_de_kijker',$page['id']), JSON_PRETTY_PRINT));
-					// error_log(json_encode($page['id'], JSON_PRETTY_PRINT));
-					
 					$posts = array();
 					foreach (get_field('in_de_kijker',$page['id']) as $post) {
-						// error_log(json_encode(get_post_thumbnail_id($post->ID), JSON_PRETTY_PRINT));
-						$posts[$post->ID] = get_post_thumbnail_id($post->ID);
+						$posts[] = array(
+							'post_id' => $post->ID,
+							'media_id' => get_post_thumbnail_id($post->ID)
+						);
 					}
-					
-					error_log(json_encode($posts, JSON_PRETTY_PRINT));
-					
 					return $posts;
 				} else {
-
 					return null;
 				}
 			}
