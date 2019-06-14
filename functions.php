@@ -266,14 +266,32 @@ function submissions_page_display() {
 
 // add rest route to get registration count and limit
 add_action('rest_api_init', function () {
-	
-	
+
 	register_rest_field(
 		'attachment',
 		'smartcrop_image_focus',
 		array(
 			'get_callback'  => function($post) {
 				return get_post_meta($post['id'], "_wpsmartcrop_image_focus");
+			}
+		)
+	);
+
+	register_rest_field(
+		array(
+			'post',
+			'ruimte',
+			'ruimte_artikel',
+			'activities',
+			'page',
+			'job-listings',
+			'locations',
+			'prijs'
+		),
+		'content_raw',
+		array(
+			'get_callback'  => function($post) {
+				return wp_strip_all_tags($post['content']['raw'], true);
 			}
 		)
 	);
