@@ -308,6 +308,7 @@ add_action('rest_api_init', function () {
 						$post = get_post($post_id);
 						$media_id = get_post_thumbnail_id($post);
 						$post->featured_media = $media_id ? get_post($media_id) : 0;
+						$post->content_raw = wp_strip_all_tags($post->post_content, true);
 						$posts[] = $post;
 					}
 					return $posts;
