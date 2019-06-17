@@ -54,6 +54,7 @@ function update_ruimte_post_title( $post_id ) {
 
 	if ( get_post_type() == 'ruimte' ) {
 		$my_post['post_title'] = 'Ruimte ' . get_field('nummer');
+		$my_post['post_name'] = 'ruimte-' . get_field('nummer');
 	} 
 	// Update the post into the database
 	wp_update_post( $my_post );
