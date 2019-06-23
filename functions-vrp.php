@@ -468,5 +468,3 @@ function register_job_listing_meta($fields){
 		register_meta( "post", $meta_key, $args );
 	}
 }
-
-if (file_exists($customfunctions = get_template_directory()."/functions-custom.php")): include($customfunctions); endif;
