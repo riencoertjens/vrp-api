@@ -468,3 +468,7 @@ function register_job_listing_meta($fields){
 		register_meta( "post", $meta_key, $args );
 	}
 }
+
+
+add_theme_support('editor-styles');
+add_editor_style('style-editor.css');
