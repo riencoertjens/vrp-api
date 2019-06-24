@@ -74,3 +74,26 @@
 .editor-block-list__block[data-align="full"] {
   max-width: none;
 }
+
+/* Style button */
+.wp-block-button__link {
+  background-color: #f28c00;
+  border: none;
+  border-radius: 28px;
+  box-shadow: none;
+  color: inherit;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 18px;
+  margin: 0;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  overflow-wrap: break-word;
+}
+.wp-block-button__link:hover,
+.wp-block-button__link:focus,
+.wp-block-button__link:active,
+.wp-block-button__link:visited {
+  color: inherit;
+}
