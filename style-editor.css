@@ -15,21 +15,30 @@
   color: black;
 }
 
-/* Style title */
-.editor-post-title__block .editor-post-title__input {
-  font-family: "Montserrat", sans-serif; /* font family of the post title */
-}
-
-/* Style headings */
+/* Style title + headings */
 .editor-post-title__block .editor-post-title__input,
 .editor-block-list__layout .editor-block-list__block h1 {
-  /* font-family: "Montserrat", sans-serif; font family of the post title */
+  font-family: "Montserrat", sans-serif; /* font family of the post title */
+  font-weight: 700;
+  color: #444444;
+  margin-bottom: 1rem;
 }
 
 .editor-block-list__layout .editor-block-list__block h2 {
+  font-weight: 300;
+  margin-top: 1rem;
+  font-size: 1.33rem;
+  text-transform: uppercase;
+  color: #666666;
+  letter-spacing: 0.33rem;
+  line-height: 2rem;
 }
 
-.editor-block-list__layout .editor-block-list__block h3 {
+.editor-block-list__layout .editor-block-list__block h3,
+.editor-block-list__layout .editor-block-list__block p.lead {
+  color: #e76d03;
+  font-size: 1.33rem;
+  font-weight: 500;
 }
 
 .editor-block-list__layout .editor-block-list__block h4 {
