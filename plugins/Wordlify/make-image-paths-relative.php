@@ -7,7 +7,7 @@ function replace_wp_content_with_relative($input) {
     if (is_string($input)) {
         $url = preg_quote(get_site_url(), "/");
         $match = "/\/wp-content\//";
-        return preg_replace($match, '../', $input);
+        return preg_replace($match, '../../static/wordsby', $input);
     } else {
         return $input;
     }

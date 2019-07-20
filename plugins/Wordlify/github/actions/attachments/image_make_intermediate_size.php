@@ -26,7 +26,7 @@ function commitEditedMedia($full_filepath) {
 
     $filename = pathinfo( $full_filepath, PATHINFO_FILENAME );
 
-    $repo_full_filepath = "wordsby/" . substr(
+    $repo_full_filepath = "static/wordsby/" . substr(
         $full_filepath, 
         strpos($full_filepath, "/uploads/") + 1
     );  
