@@ -160,22 +160,21 @@ function posts_formatted_for_gatsby($id_param, $revision = "", $liveData = "") {
         }
 
         
-        $post->post_parent = $post->post_parent ? get_post($post->post_parent) : [];
         
-
+        
         if ($Yoast_To_Wordsby) {
             $yoast_meta = $Yoast_To_Wordsby->json_encode_yoast($id);
         } else {
             $yoast_meta = null;
         }
-
+        
         // write_log($yoast_meta);
         // $post->yoast = $yoast_meta;
-
+        
         if ( empty( $post->post_excerpt ) ) {
             $post->post_excerpt = strip_tags( $post->post_content ) ;
         }
-        
+        $post->post_parent = $post->post_parent ? get_post($post->post_parent) : [];
         $post->type = "collection";
         $post->taxonomies = $post_taxonomy_terms;
         $post->term_slugs = $post_terms;
@@ -186,7 +185,9 @@ function posts_formatted_for_gatsby($id_param, $revision = "", $liveData = "") {
         $post->template_slug = $template;
         $post->acf = $all_acf ? $all_acf : [];
         $post->post_content = replace_urls_with_pathnames(
-            apply_filters('the_content', $post->post_content)
+            makeInlineImagesRelative(
+                apply_filters('the_content', $post->post_content)
+            )
         );
 
         // remove unneeded data
