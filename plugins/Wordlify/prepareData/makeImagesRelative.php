@@ -1,11 +1,10 @@
 <?php 
 
 function makeImagesRelative($json) {
-
     $url = preg_quote(get_site_url(), "/");
 
     return preg_replace(
-        "/$url\/wp-content\//", '../../static/wordsby/', str_replace('vrp.be', 'webhart.one', $json)
+        "/$url\/wp-content\//", '../../static/wordsby/', $json
     );
 }
 
