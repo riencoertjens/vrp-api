@@ -51,6 +51,7 @@ function custom_api_get_all_taxonomies_terms_callback($type = null) {
             $featured_img = [];
 
             if ($all_acf) {
+
                 if($all_acf['afbeelding']){
                     $image_id = $all_acf['afbeelding'];
                     if (wp_attachment_is_image($image_id)){
@@ -99,6 +100,7 @@ function custom_api_get_all_taxonomies_terms_callback($type = null) {
             $taxonomy_terms[] = [
                 'slug' => $term->slug,
                 'name' => $term->name,
+                'description' => $term->description,
                 'wordpress_id' => $term->term_id,
                 'taxonomy' => $term->taxonomy,
                 'featured_img' => $featured_img,
