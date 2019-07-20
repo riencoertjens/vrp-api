@@ -10,5 +10,7 @@ require_once __DIR__ . '/active-plugins.php';
 require_once __DIR__ . "/site-meta.php";
 require_once __DIR__ . "/options.php";
 require_once __DIR__ . "/tax-terms.php";
+require_once __DIR__ . "/tax.php";
+require_once __DIR__ . "/terms.php";
 
 ?>

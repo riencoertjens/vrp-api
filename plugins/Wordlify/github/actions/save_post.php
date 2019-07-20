@@ -1,6 +1,7 @@
 <?php 
 // on post save, trash, or untrash, commit the collections endpoint to the gatsby repo.
 add_action('acf/save_post', 'commitJSON');
+add_action('edited_terms', 'commitJSON');
 add_action('trashed_post', 'commitJSON');
 add_action('untrashed_post', 'commitJSON');
 
@@ -23,10 +24,20 @@ function commitJSON($id) {
                 'encoding' => 'utf-8'
             ],
             [
-                'path' => 'wordsby/data/tax-terms.json',
-                'content' => getTaxTermsJSON(), 
+                'path' => 'wordsby/data/terms.json',
+                'content' => getTermsJSON(), 
                 'encoding' => 'utf-8'
             ],
+            [
+                'path' => 'wordsby/data/tax.json',
+                'content' => getTaxJSON(), 
+                'encoding' => 'utf-8'
+            ],
+            // [
+            //     'path' => 'wordsby/data/tax-terms.json',
+            //     'content' => getTaxTermsJSON(), 
+            //     'encoding' => 'utf-8'
+            // ],
             // [
             //     'path' => 'wordsby/data/options.json',
             //     'content' => getOptionsJSON(), 

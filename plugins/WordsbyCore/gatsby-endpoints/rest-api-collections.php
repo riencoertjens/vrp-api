@@ -75,14 +75,12 @@ function posts_formatted_for_gatsby($id_param, $revision = "", $liveData = "") {
     foreach( $posts as $post ) {
         $id = $post->ID; 
 
-        $post_thumbnail = 
-            ( has_post_thumbnail( $id ) ) ? 
-                get_the_post_thumbnail_url( $id ) : 
-                null;
+        $post_thumbnail = null;
 
-
+        $post_thumbnail = get_post_thumbnail_object($id);
+        
         if (!$post_thumbnail) {
-            $post_thumbnail = ( $id_param && has_post_thumbnail( $id_param ) ) ? get_the_post_thumbnail_url( $id_param ) : null;
+            $post_thumbnail = get_post_thumbnail_object($id_param);
         }
 
         $permalink = get_permalink($id);
@@ -102,9 +100,13 @@ function posts_formatted_for_gatsby($id_param, $revision = "", $liveData = "") {
             if (!$terms) continue;
 
             foreach($terms as $term) {
+
+                $term->parent = ($term->parent !== 0) ? get_term($term->parent)->slug : null;
+
                 $term->pathname = make_url_path(
                     get_term_link($term)
                 );
+
                 array_push($post_terms, $term->slug);
             }
             
@@ -131,6 +133,9 @@ function posts_formatted_for_gatsby($id_param, $revision = "", $liveData = "") {
             // removing site urls from links to create pathnames in gatsby
             array_walk_recursive($all_acf, 'remove_urls');
 
+            array_walk_recursive($all_acf, 'set_acf_fields');
+
+
             if ($revision !== "" || $liveData !== "") {
                 // checking for flexible content and manipulating flexible fields to mimic gatsby's graphql fragment output structure.
                 foreach ($all_acf as $key=>$field) {
@@ -154,15 +159,23 @@ function posts_formatted_for_gatsby($id_param, $revision = "", $liveData = "") {
             }
         }
 
+        
+        $post->post_parent = $post->post_parent ? get_post($post->post_parent) : [];
+        
+
         if ($Yoast_To_Wordsby) {
             $yoast_meta = $Yoast_To_Wordsby->json_encode_yoast($id);
         } else {
             $yoast_meta = null;
         }
 
-        write_log($yoast_meta);
+        // write_log($yoast_meta);
+        // $post->yoast = $yoast_meta;
+
+        if ( empty( $post->post_excerpt ) ) {
+            $post->post_excerpt = strip_tags( $post->post_content ) ;
+        }
         
-        $post->yoast = $yoast_meta;
         $post->type = "collection";
         $post->taxonomies = $post_taxonomy_terms;
         $post->term_slugs = $post_terms;
@@ -177,7 +190,6 @@ function posts_formatted_for_gatsby($id_param, $revision = "", $liveData = "") {
         );
 
         // remove unneeded data
-        unset($post->post_excerpt);
         unset($post->ping_status);
         unset($post->post_password);
         unset($post->to_ping);
@@ -192,6 +204,34 @@ function posts_formatted_for_gatsby($id_param, $revision = "", $liveData = "") {
 
         $posts_data[] = $post;
     }                  
-    return $posts_data;   
+    return $posts_data;
+}
+
+
+function set_acf_fields(&$item, $key) {
+    if (is_object($item) && get_class($item) === "WP_Post") {
+        $acf_fields = get_fields($item->ID);
+        if ($acf_fields){
+            $item->acf = $acf_fields;
+        }
+
+        $item->featured_img = get_post_thumbnail_object($item->ID);
+    }
+}
+
+function get_post_thumbnail_object($post_id){
+    $post_thumbnail = null;
+    if ( has_post_thumbnail( $post_id ) ) {
+        $post_thumbnail['file'] = get_the_post_thumbnail_url( $post_id );
+        $smartcrop_image_focus = get_post_meta(get_post_thumbnail_id( $post_id ), "_wpsmartcrop_image_focus");
+        $post_thumbnail['smartcrop_image_focus'] = 
+            $smartcrop_image_focus ? 
+                $smartcrop_image_focus[0] : 
+                array(
+                    "left"=> "50",
+                    "top"=> "50"
+                );
+    }
+    return $post_thumbnail;
 }
 ?>
