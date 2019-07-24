@@ -10,7 +10,7 @@ function deleteMedia($id) {
     $filename = basename($filepath);
     $filedirectory = dirname($filepath); 
 
-    $base_path = 'wordsby/uploads';
+    $base_path = 'static/wordsby/uploads';
 
     $fulldirectory = "$base_path/$filedirectory/";
     $full_filepath = "$fulldirectory$filename";
