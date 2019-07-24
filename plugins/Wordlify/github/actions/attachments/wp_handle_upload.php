@@ -6,7 +6,7 @@ function commitMedia($upload) {
     $initial_filepath = explode("uploads/", $upload['file'])[1];
     $filename = basename($initial_filepath);
     $subdir = dirname($initial_filepath);
-    $base_path = 'static/wordsby/uploads';
+    $base_path = 'wordsby/uploads';
     $file_dir = "$base_path/$subdir";
     $filepath = "$file_dir/$filename";
 
