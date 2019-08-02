@@ -38,7 +38,7 @@ add_action('rest_api_init', function () {
 				if ($page['slug'] === "home"){
 					$posts = array();
 
-					foreach (get_field('in_de_kijker',$page['id']) as $post_id) {
+					foreach (get_field('slider_posts',$page['id']) as $post_id) {
 						$post = get_post($post_id);
 						$media_id = get_post_thumbnail_id($post);
 						$post->featured_media = $media_id ?  (int)$media_id : 0;
