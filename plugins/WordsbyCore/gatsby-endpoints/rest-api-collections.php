@@ -77,6 +77,21 @@ function posts_formatted_for_gatsby($id_param, $revision = "", $liveData = "") {
 
         $post_thumbnail = null;
 
+        if ($post->post_type === "job_listing"){
+            // get_post_meta($post_id, $key, $single)
+            $post->job_info = array(
+                "filled" => get_post_meta($post->ID, "_filled"),
+                "featured" => get_post_meta($post->ID, "_featured"),
+                "job_location" => get_post_meta($post->ID, "_job_location"),
+                "application" => get_post_meta($post->ID, "_application"),
+                "company_name" => get_post_meta($post->ID, "_company_name"),
+                "company_website" => get_post_meta($post->ID, "_company_website"),
+                "company_tagline" => get_post_meta($post->ID, "_company_tagline"),
+                "company_video" => get_post_meta($post->ID, "_company_video"),
+                "company_twitter" => get_post_meta($post->ID, "_company_twitter")
+            );
+        }
+
         $post_thumbnail = get_post_thumbnail_object($id);
         
         if (!$post_thumbnail) {
