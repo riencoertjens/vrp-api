@@ -10,7 +10,7 @@ function makeImagesRelative($json) {
 
 
 function makeInlineImagesRelative($post_content) {
-    $url = preg_quote(get_site_url(), "/");
+    $url = preg_quote("https://vrp-final.netlify.com", "/");
 
     return preg_replace(
         "/$url\/wp-content\//", '/wordsby/', $post_content
