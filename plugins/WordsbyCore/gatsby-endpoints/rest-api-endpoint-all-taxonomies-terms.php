@@ -74,7 +74,7 @@ function custom_api_get_all_taxonomies_terms_callback($type = null) {
                 // removing site urls from links to create pathnames in gatsby
                 array_walk_recursive($all_acf, 'remove_urls');
 
-                if ((isset($revision) && $revision !== "") || $liveData !== "") {
+                if ((isset($revision) && $revision !== "") || (isset($liveData) && $liveData !== "")) {
                     // checking for flexible content and manipulating flexible fields to mimic gatsby's graphql fragment output structure.
                     foreach ($all_acf as $key=>$field) {
                         if (
