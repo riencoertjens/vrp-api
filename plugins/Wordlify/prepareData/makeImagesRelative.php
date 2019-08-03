@@ -12,17 +12,9 @@ function makeImagesRelative($json) {
 function makeInlineImagesRelative($post_content) {
     $url = preg_quote(get_site_url(), "/");
 
-    return str_replace(
-        array(
-            "https://www.vrp.be/wp-content/",
-            "https://vrp.be/wp-content/",
-            "http://www.vrp.be/wp-content/",
-            "http://vrp.be/wp-content/"
-        ),
-        "/wordsby/",
-        preg_replace("/$url\/wp-content\//", '/wordsby/', $post_content)
+    return preg_replace(
+        "/$url\/wp-content\//", '/wordsby/', $post_content
     );
-
 }
 
 ?>
