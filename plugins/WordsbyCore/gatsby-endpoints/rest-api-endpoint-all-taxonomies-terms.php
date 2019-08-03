@@ -74,6 +74,8 @@ function custom_api_get_all_taxonomies_terms_callback($type = null) {
                 // removing site urls from links to create pathnames in gatsby
                 array_walk_recursive($all_acf, 'remove_urls');
 
+                array_walk_recursive($all_acf, 'set_acf_fields');
+
                 if ((isset($revision) && $revision !== "") || (isset($liveData) && $liveData !== "")) {
                     // checking for flexible content and manipulating flexible fields to mimic gatsby's graphql fragment output structure.
                     foreach ($all_acf as $key=>$field) {
@@ -121,5 +123,33 @@ function custom_api_get_all_taxonomies_terms_callback($type = null) {
             'terms' => $taxonomy_terms
         );
     }
+}
+
+
+function set_acf_fields(&$item, $key) {
+    if (is_object($item) && get_class($item) === "WP_Post") {
+        $acf_fields = get_fields($item->ID);
+        if ($acf_fields){
+            $item->acf = $acf_fields;
+        }
+
+        $item->featured_img = get_post_thumbnail_object($item->ID);
+    }
+}
+
+function get_post_thumbnail_object($post_id){
+    $post_thumbnail = null;
+    if ( has_post_thumbnail( $post_id ) ) {
+        $post_thumbnail['file'] = get_the_post_thumbnail_url( $post_id );
+        $smartcrop_image_focus = get_post_meta(get_post_thumbnail_id( $post_id ), "_wpsmartcrop_image_focus");
+        $post_thumbnail['smartcrop_image_focus'] = 
+            $smartcrop_image_focus ? 
+                $smartcrop_image_focus[0] : 
+                array(
+                    "left"=> "50",
+                    "top"=> "50"
+                );
+    }
+    return $post_thumbnail;
 }
 ?>
