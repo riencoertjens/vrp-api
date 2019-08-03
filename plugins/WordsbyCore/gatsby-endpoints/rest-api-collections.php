@@ -69,7 +69,7 @@ function posts_formatted_for_gatsby($id_param, $revision = "", $liveData = "") {
     ); 
     }
 
-    // $Yoast_To_Wordsby = Wordsby_Yoast_init();
+    $Yoast_To_Wordsby = Wordsby_Yoast_init();
 
     // Loop through the posts and push the desired data to the array we've initialized earlier in the form of an object
     foreach( $posts as $post ) {
