@@ -2,7 +2,7 @@
 
 function makeImagesRelative($json) {
     $url = preg_quote(get_site_url(), "/");
-    $content = str_replace(array('http://www.vrp.be', 'http://.vrp.be', 'https://vrp.be'), 'https://www.vrp.be', $json);
+    $content = str_replace(array('http://www.vrp.be/', 'http://.vrp.be/', 'https://vrp.be/'), 'https://vrp-legacy.netlify.com/', $json);
     return preg_replace(
         "/$url\/wp-content\//", '../../static/wordsby/', $content
     );
