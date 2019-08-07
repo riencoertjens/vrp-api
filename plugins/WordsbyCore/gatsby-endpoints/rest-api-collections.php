@@ -185,11 +185,10 @@ function posts_formatted_for_gatsby($id_param, $revision = "", $liveData = "") {
         
         // write_log($yoast_meta);
         // $post->yoast = $yoast_meta;
-
+        
         if ( empty( $post->post_excerpt ) ) {
-            $post->post_excerpt = substr(strip_tags( $post->post_content ), 0, 160);
+            $post->post_excerpt = strip_tags( $post->post_content ) ;
         }
-
         $post->post_parent = $post->post_parent ? get_post($post->post_parent) : [];
         $post->type = "collection";
         $post->taxonomies = $post_taxonomy_terms;
