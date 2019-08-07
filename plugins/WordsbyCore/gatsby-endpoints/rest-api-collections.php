@@ -187,12 +187,13 @@ function posts_formatted_for_gatsby($id_param, $revision = "", $liveData = "") {
         // $post->yoast = $yoast_meta;
 
         if ( empty( $post->post_excerpt ) ) {
-            $new_excerpt = strip_tags( $post->post_content );
-            $new_excerpt = preg_replace('/\s+/', ' ', $new_excerpt);
-            $new_excerpt = substr($new_excerpt, 0, 160);
-            $new_excerpt = $new_excerpt  . ' ...';
+            // $new_excerpt = strip_tags( $post->post_content );
+            // $new_excerpt = preg_replace('/\s+/', ' ', $new_excerpt);
+            // $new_excerpt = substr($new_excerpt, 0, 160);
+            // $new_excerpt = $new_excerpt  . ' ...';
 
-            $post->post_excerpt = $new_excerpt;
+            // $post->post_excerpt = $new_excerpt;
+            $post->post_excerpt = strip_tags( $post->post_content );
         }
         $post->post_parent = $post->post_parent ? get_post($post->post_parent) : [];
         $post->type = "collection";
