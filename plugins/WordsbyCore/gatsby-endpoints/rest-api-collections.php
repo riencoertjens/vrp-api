@@ -52,7 +52,16 @@ function posts_formatted_for_gatsby($id_param, $revision = "", $liveData = "") {
 
     if ($revision === "") {
         $posts = get_posts( array(
-                'post_type' => 'any',
+                'post_type' => array(
+                    'activiteit',
+                    'blog',
+                    'job_listing',
+                    'page',
+                    'post',
+                    'prijs',
+                    'ruimte',
+                    'ruimte_artikel',
+                ),
                 'posts_per_page' => -1, 
                 'p' => $id_param,
                 'orderby' => 'post_type menu_order date',
@@ -186,15 +195,18 @@ function posts_formatted_for_gatsby($id_param, $revision = "", $liveData = "") {
         // write_log($yoast_meta);
         // $post->yoast = $yoast_meta;
 
-        if ( empty( $post->post_excerpt ) ) {
-            // $new_excerpt = strip_tags( $post->post_content );
-            // $new_excerpt = preg_replace('/\s+/', ' ', $new_excerpt);
-            // $new_excerpt = substr($new_excerpt, 0, 160);
-            // $new_excerpt = $new_excerpt  . ' ...';
-
-            // $post->post_excerpt = $new_excerpt;
-            $post->post_excerpt = strip_tags( $post->post_content );
-        }
+        // if ( empty( $post->post_excerpt ) ) {
+        //     $new_excerpt = strip_tags( $post->post_content );
+        //     $new_excerpt = preg_replace('/\s+/', ' ', $new_excerpt);
+            
+        //     // if (strlen($new_excerpt) > 160){
+        //     //     $new_excerpt = substr($new_excerpt, 0, 160);
+        //     // }
+            
+        //     $post->post_excerpt = $new_excerpt;
+        //     // $post->post_excerpt = strip_tags( $post->post_content );
+        // }
+        
         $post->post_parent = $post->post_parent ? get_post($post->post_parent) : [];
         $post->type = "collection";
         $post->taxonomies = $post_taxonomy_terms;
