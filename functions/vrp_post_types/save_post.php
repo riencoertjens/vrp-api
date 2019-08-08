@@ -7,13 +7,7 @@ function update_ruimte_post_title($post_id)
 	$my_post['ID'] = $post_id;
 
 	if (get_post_type() == 'ruimte') {
-		$title = 'Ruimte ' . get_field('nummer');
-		$subject = get_field('subject');
-		if ($subject && strlen($subject) > 1) {
-			$title .= " " . get_field('subject');
-		}
-		$my_post['post_title'] = $title;
-
+		$my_post['post_title'] = 'Ruimte ' . get_field('nummer');
 		$my_post['post_name'] = 'ruimte-' . get_field('nummer');
 	}
 	// Update the post into the database
