@@ -41,7 +41,7 @@ function submissions_page_display()
 		?>
 		<div class="wrap">
 			<h1>registraties: <a href="post.php?action=edit&post=<?= $activity->ID; ?>"><?= $activity->post_title; ?></a></h1>
-			<a href="edit.php?post_type=activity&page=registraties">terug naar overzicht</a><br />
+			<a href="edit.php?post_type=activiteit&page=registraties">terug naar overzicht</a><br />
 			<!-- <a href="">exporteer csv</a> -->
 			<?php $submissionsListTable->display(); ?>
 

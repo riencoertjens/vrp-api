@@ -55,7 +55,7 @@ class Submissions_Overview_List_Table extends WP_List_Table {
     } elseif ($column_name == 'close_date'){
       return get_field('close_date', $item->ID);
     } else {
-      return '<a href="edit.php?post_type=activity&page=registraties&activity_id='.$item->ID.'">'.$item->$column_name.'</a>';
+      return '<a href="edit.php?post_type=activiteit&page=registraties&activity_id='.$item->ID.'">'.$item->$column_name.'</a>';
     }
   }
 
@@ -70,7 +70,7 @@ class Submissions_Overview_List_Table extends WP_List_Table {
     $this->_column_headers = array($columns, $hidden, $sortable);
 
     $data = get_posts(array(
-      'post_type' => 'activity',
+      'post_type' => 'activiteit',
       'meta_key'		=> 'hasform',
       'meta_value'	=> true,
       'orderby' => (!empty($_REQUEST['orderby'])) ? $_REQUEST['orderby'] : 'title', //If no sort, default to title
@@ -90,5 +90,3 @@ class Submissions_Overview_List_Table extends WP_List_Table {
   ) );
   }
 }
-
-?>
