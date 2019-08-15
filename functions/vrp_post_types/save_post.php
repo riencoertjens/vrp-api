@@ -32,3 +32,22 @@ function update_prijs_post_category($post_id)
 	}
 }
 add_action('acf/save_post', 'update_prijs_post_category', 15, 1);
+
+//update post excerpt
+function update_post_excerpt($post_id)
+{
+	$post = get_post($post_id);
+	$excerpt = wp_strip_all_tags($post->post_content, true);
+	$excerpt = preg_replace('/\s+/', ' ', $excerpt);
+	if (strlen($excerpt) > 160) {
+		$excerpt = substr($excerpt, 0, 160);
+		$excerpt = substr($excerpt, 0, strrpos($excerpt, ' '));
+		$excerpt .= " [...]";
+	}
+	$post_arr = array(
+		'ID'           => $post->ID,
+		'post_excerpt'   => $excerpt,
+	);
+	wp_update_post($post_arr);
+}
+add_action('acf/save_post', 'update_post_excerpt', 20, 1);

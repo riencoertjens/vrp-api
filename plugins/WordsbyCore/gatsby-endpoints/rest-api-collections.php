@@ -268,4 +268,3 @@ function get_post_thumbnail_object($post_id){
     }
     return $post_thumbnail;
 }
-?>
