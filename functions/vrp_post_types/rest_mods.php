@@ -167,8 +167,8 @@ function vrp_form_submission(WP_REST_Request $request)
 		$confirm_mail,
 		$confirm_subject,
 		'test',
-		"From: no-reply@vrp.be\r\n",
-		"-F no-reply@vrp.be"
+		"From: no-reply@webhart.one\r\n" . "Reply-To: webmaster@example.com\r\n",
+		"-F no-reply@webhart.one"
 	);
 
 	// error_log(json_encode(array($confirm_mail, $confirm_subject, $confirm_message, "From: no-reply@vrp.be\r\n"), JSON_PRETTY_PRINT));
