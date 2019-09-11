@@ -6,6 +6,9 @@ add_action('trashed_post', 'commitJSON');
 add_action('untrashed_post', 'commitJSON');
 
 function commitJSON($id) {
+
+    if (get_post($id)->post_type === 'registratie') return;
+
     // dont create commits when saving menus
     if (isset($_POST['nav-menu-data'])) return;
 
@@ -56,5 +59,3 @@ function commitJSON($id) {
         ]
     );
 }
-
-?>
