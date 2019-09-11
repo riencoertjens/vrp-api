@@ -162,12 +162,23 @@ function vrp_form_submission(WP_REST_Request $request)
 
 	$confirm_mail = $json_data['email'];
 
+	error_log(json_encode($fields, JSON_PRETTY_PRINT));
+
+	if ($fields['admin_confirmation'] === true) {
+		$success = mail(
+			$fields['admin_email_address'],
+			'nieuwe ' . $confirm_subject,
+			'rien@lucifer.be', //$fields['admin_email_message'],
+			"From: no-reply@webhart.one\r\n",
+			"-F no-reply@webhart.one"
+		);
+	}
 	//^#9B#dncmh
 	$success = mail(
 		$confirm_mail,
 		$confirm_subject,
-		'test',
-		"From: no-reply@webhart.one\r\n" . "Reply-To: webmaster@example.com\r\n",
+		$confirm_message,
+		"From: no-reply@webhart.one\r\n" . "Reply-To: info@vrp.be\r\n",
 		"-F no-reply@webhart.one"
 	);
 
