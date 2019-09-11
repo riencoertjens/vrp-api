@@ -151,7 +151,8 @@ function vrp_form_submission(WP_REST_Request $request)
 
 	add_post_meta($post_id, 'activity_id', $activity->ID);
 
-
+	$response = new WP_REST_Response($post_id);
+	$response->set_status(200);
 
 	$fields = get_fields($activity->ID);
 
@@ -169,16 +170,6 @@ function vrp_form_submission(WP_REST_Request $request)
 		"From: no-reply@webhart.one\r\n",
 		"-F no-reply@webhart.one"
 	);
-
-
-	$response = new WP_REST_Response(json_encode(array(
-		$confirm_mail,
-		$confirm_subject,
-		$confirm_message,
-		"From: no-reply@webhart.one\r\n",
-		"-F no-reply@webhart.one"
-	)));
-	$response->set_status(200);
 
 	// error_log(json_encode(array($confirm_mail, $confirm_subject, $confirm_message, "From: no-reply@vrp.be\r\n"), JSON_PRETTY_PRINT));
 	// error_log($success ? 'yay' : 'nay');
