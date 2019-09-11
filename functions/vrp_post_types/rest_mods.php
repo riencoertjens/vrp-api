@@ -158,7 +158,7 @@ function vrp_form_submission(WP_REST_Request $request)
 
 	$confirm_subject = "inschrijving " . $activity->post_title;
 	$confirm_message = $fields['confirmation_mail'];
-	$confirm_message = str_replace('#_EVENTNAME', $activity->post_title, $confirm_message);
+	$confirm_message = str_replace('#_EVENTNAME', "'" . $activity->post_title . "'", $confirm_message);
 
 	$confirm_mail = $json_data['email'];
 
@@ -166,9 +166,9 @@ function vrp_form_submission(WP_REST_Request $request)
 	$success = mail(
 		$confirm_mail,
 		$confirm_subject,
-		$confirm_message,
-		"From: no-reply@webhart.one\r\n",
-		"-F no-reply@webhart.one"
+		'test',
+		"From: no-reply@vrp.be\r\n",
+		"-F no-reply@vrp.be"
 	);
 
 	// error_log(json_encode(array($confirm_mail, $confirm_subject, $confirm_message, "From: no-reply@vrp.be\r\n"), JSON_PRETTY_PRINT));
