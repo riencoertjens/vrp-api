@@ -51,15 +51,15 @@ add_action('rest_api_init', function () {
 	// 			}
 	// 		}
 	// 	)
-  // );
+	// );
 
-  // add rest route to add form submission
-	register_rest_route( 'vrp-api/v1', 'form-submission',array(
+	// add rest route to add form submission
+	register_rest_route('vrp-api/v1', 'form-submission', array(
 		'methods'  => WP_REST_Server::CREATABLE,
 		'callback' => 'vrp_form_submission'
 	));
 
-  // register job listing meta keys
+	// register job listing meta keys
 	// register_job_listing_meta(array(
 	// 	"_filled" => array( // Validate and sanitize the meta value.
 	// 		// Note: currently (4.7) one of 'string', 'boolean', 'integer',
@@ -123,14 +123,16 @@ add_action('rest_api_init', function () {
 	// ));
 });
 
-function register_job_listing_meta($fields){
+function register_job_listing_meta($fields)
+{
 	foreach ($fields as $meta_key => $args) {
-		register_meta( "post", $meta_key, $args );
+		register_meta("post", $meta_key, $args);
 	}
 }
 
 // form submission function
-function vrp_form_submission( WP_REST_Request $request ) {
+function vrp_form_submission(WP_REST_Request $request)
+{
 
 	$json_data = $request->get_json_params();
 	$activity = get_post($json_data['data']['activity_id']);
@@ -151,6 +153,27 @@ function vrp_form_submission( WP_REST_Request $request ) {
 
 	$response = new WP_REST_Response($post_id);
 	$response->set_status(200);
+
+	$fields = get_fields($activity->ID);
+
+	$confirm_subject = "inschrijving " . $activity->post_title;
+	$confirm_message = $fields['confirmation_mail'];
+	$confirm_message = str_replace('#_EVENTNAME', $activity->post_title, $confirm_message);
+
+	$confirm_mail = $json_data['email'];
+
+	//^#9B#dncmh
+	$success = mail(
+		$confirm_mail,
+		$confirm_subject,
+		$confirm_message,
+		"From: no-reply@webhart.one\r\n",
+		"-F no-reply@webhart.one"
+	);
+
+	// error_log(json_encode(array($confirm_mail, $confirm_subject, $confirm_message, "From: no-reply@vrp.be\r\n"), JSON_PRETTY_PRINT));
+	// error_log($success ? 'yay' : 'nay');
+	// error_log('donezeeeees');
 
 	return $response;
 }
