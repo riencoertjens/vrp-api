@@ -171,13 +171,13 @@ function vrp_form_submission(WP_REST_Request $request)
 	);
 
 
-	$response = new WP_REST_Response(array(
+	$response = new WP_REST_Response(json_encode(array(
 		$confirm_mail,
 		$confirm_subject,
 		$confirm_message,
 		"From: no-reply@webhart.one\r\n",
 		"-F no-reply@webhart.one"
-	));
+	)));
 	$response->set_status(200);
 
 	// error_log(json_encode(array($confirm_mail, $confirm_subject, $confirm_message, "From: no-reply@vrp.be\r\n"), JSON_PRETTY_PRINT));
