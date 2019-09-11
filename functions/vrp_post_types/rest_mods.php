@@ -164,29 +164,19 @@ function vrp_form_submission(WP_REST_Request $request)
 
 	// error_log(json_encode($fields, JSON_PRETTY_PRINT));
 
-	if ($fields['admin_confirmation'] === true) {
-		// error_log('jaaaa');
+	if ($fields['admin_confirmation'] === true) { //send confirmation to admin
 		$admin_message = $fields['admin_email_message'];
-		$admin_message = str_replace('#_EVENTNAME', "'" . $activity->post_title . "'", $admin_message);;
-		// error_log(json_encode(
-		// 	array(
-		// 		'rien@lucifer.be', //$fields['admin_email_address'],
-		// 		'nieuwe ' . $confirm_subject,
-		// 		$admin_message,
-		// 		"From: no-reply@webhart.one\r\n",
-		// 		"-F no-reply@webhart.one"
-		// 	),
-		// 	JSON_PRETTY_PRINT
-		// ));
-		$success = mail(
-			'rien@lucifer.be', //$fields['admin_email_address'],
+		$admin_message = str_replace('#_EVENTNAME', "'" . $activity->post_title . "'", $admin_message);
+
+		mail(
+			$fields['admin_email_address'],
 			'nieuwe ' . $confirm_subject,
 			$admin_message,
 			"From: no-reply@webhart.one\r\n",
 			"-F no-reply@webhart.one"
 		);
 	}
-	//^#9B#dncmh
+
 	$success = mail(
 		$confirm_mail,
 		$confirm_subject,
