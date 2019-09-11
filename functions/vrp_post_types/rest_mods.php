@@ -162,8 +162,6 @@ function vrp_form_submission(WP_REST_Request $request)
 
 	$confirm_mail = $json_data['email'];
 
-	// error_log(json_encode($fields, JSON_PRETTY_PRINT));
-
 	if ($fields['admin_confirmation'] === true) { //send confirmation to admin
 		$admin_message = $fields['admin_email_message'];
 		$admin_message = str_replace('#_EVENTNAME', "'" . $activity->post_title . "'", $admin_message);
