@@ -30,8 +30,11 @@ class Submissions_List_Table extends WP_List_Table
     );
     $_choices = array();
 
+    $_columns['post_date'] = 'Datum';
+
     foreach ($forms as $form) {
       $post_content = json_decode($form->post_content);
+
 
       foreach ($post_content->fields as $field) {
         $column_id = $post_content->id . '_' . $field->id;
@@ -78,19 +81,24 @@ class Submissions_List_Table extends WP_List_Table
   {
     $post_content = json_decode($item->post_content, true);
 
-    $value = $post_content[$column_name];
-
-    if ($value === null) {
-      $label = "n/a";
-    } elseif (substr_count($column_name, '_') == 2) {
-      $checked = ($post_content[$column_name] == 1) ? 'checked' : '';
-      $label = '<input type="checkbox" ' . $checked . ' disabled />';
-    } elseif (isset($this->choices[$column_name])) {
-      $value = $value + 1;
-      $label = $this->choices[$column_name]->$value->label;
+    if ($column_name === 'post_date') {
+      return $item->post_date;
     } else {
-      $label = $post_content[$column_name];
+      $value = $post_content[$column_name];
+      $isCheckbox = substr_count($column_name, '_') == 2;
+      if (!$isCheckbox && $value === null) {
+        $label = "n/a";
+      } elseif ($isCheckbox) {
+        $label = ($post_content[$column_name] == 1 || $post_content[$column_name] == 'on') ? '✔' : '—';
+      } elseif (isset($this->choices[$column_name])) {
+        $value = $value + 1;
+        $label = $this->choices[$column_name]->$value->label;
+      } else {
+        $label = $post_content[$column_name];
+      }
     }
+
+
     return $label;
   }
 
@@ -136,7 +144,6 @@ class Submissions_List_Table extends WP_List_Table
   {
     ob_start();
 
-
     $columns = $this->get_columns();
 
     $args = array(
@@ -176,7 +183,6 @@ class Submissions_List_Table extends WP_List_Table
     foreach ($data as $item) {
       $row = [];
       foreach ($columns as $column_name => $column_label) {
-        error_log(json_encode($this->column_default($item, $column_name), JSON_PRETTY_PRINT));
         $row[] = $this->column_default($item, $column_name);
       }
       fputcsv($file, $row);
@@ -187,7 +193,5 @@ class Submissions_List_Table extends WP_List_Table
     ob_end_flush();
 
     die();
-
-    // error_log(json_encode($data, JSON_PRETTY_PRINT));
   }
 }
