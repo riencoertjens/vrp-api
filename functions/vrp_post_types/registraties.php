@@ -84,8 +84,6 @@ function activity_submission_count($data)
 {
   $activity_id = $data['id'];
 
-  // $hasform = get_field('hasform', $activity_id);
-
   $args = array(
     'post_type' => 'registratie',
     'meta_query' => array(
