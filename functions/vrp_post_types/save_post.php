@@ -51,3 +51,41 @@ function update_post_excerpt($post_id)
 	wp_update_post($post_arr);
 }
 add_action('acf/save_post', 'update_post_excerpt', 20, 1);
+
+
+
+function save_wpforms_post_content($id)
+{ //form
+
+	$post = get_post($id);
+
+	if ($post->post_type === "wpforms") {
+		$post_content_data = json_decode($post->post_content);
+		// error_log(json_encode($post_content, JSON_PRETTY_PRINT));
+		$newFields = array();
+		$i = 0;
+		foreach ($post_content_data->fields as $stupid_key => $fieldData) {
+			error_log($stupid_key);
+			$newFields["{$i}"] = $fieldData;
+
+			$i++;
+		}
+
+		$post_content_data->fields = $newFields;
+
+		$post_content = wp_slash(wp_json_encode($post_content_data));
+
+		$post_arr = array(
+			'ID'           => $post->ID,
+			'post_content'   => $post_content,
+		);
+
+		// If calling wp_update_post, unhook this function so it doesn't loop infinitely
+		remove_action('save_post', 'save_wpforms_post_content');
+		// call wp_update_post update
+		wp_update_post($post_arr);
+		// re-hook this function
+		add_action('save_post', 'save_wpforms_post_content');
+	}
+}
+add_action('save_post', 'save_wpforms_post_content');
