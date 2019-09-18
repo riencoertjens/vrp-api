@@ -93,8 +93,8 @@ function save_wpforms_post_content($id)
         wp_update_post($post_arr);
         // re-hook this function
         add_action('save_post', 'save_wpforms_post_content');
+        commitJSON($id);
     }
 
-    commitJSON($id);
 }
 add_action('save_post', 'save_wpforms_post_content');
