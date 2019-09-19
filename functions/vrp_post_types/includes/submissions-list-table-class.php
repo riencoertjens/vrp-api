@@ -84,17 +84,21 @@ class Submissions_List_Table extends WP_List_Table
     if ($column_name === 'post_date') {
       return $item->post_date;
     } else {
-      $value = $post_content[$column_name];
-      $isCheckbox = substr_count($column_name, '_') == 2;
-      if (!$isCheckbox && $value === null) {
-        $label = "n/a";
-      } elseif ($isCheckbox) {
-        $label = ($post_content[$column_name] == 1 || $post_content[$column_name] == 'on') ? '✔' : '—';
-      } elseif (isset($this->choices[$column_name])) {
-        $value = $value + 1;
-        $label = $this->choices[$column_name]->$value->label;
+      if(isset($post_content[$column_name])){ //check for value, in case form has been changed during registrations
+        $value = $post_content[$column_name];
+        $isCheckbox = substr_count($column_name, '_') == 2;
+        if (!$isCheckbox && $value === null) {
+          $label = "n/a";
+        } elseif ($isCheckbox) {
+          $label = ($post_content[$column_name] == 1 || $post_content[$column_name] == 'on') ? '✔' : '—';
+        } elseif (isset($this->choices[$column_name])) {
+          $value = $value + 1;
+          $label = $this->choices[$column_name]->$value->label;
+        } else {
+          $label = $post_content[$column_name];
+        }
       } else {
-        $label = $post_content[$column_name];
+        $label = "—";
       }
     }
 

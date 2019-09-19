@@ -69,7 +69,7 @@ class Submissions_Overview_List_Table extends WP_List_Table
   function prepare_items()
   {
 
-    $per_page = 10;
+    $per_page = 20;
 
     $columns = $this->get_columns();
     $hidden = array();
@@ -78,6 +78,7 @@ class Submissions_Overview_List_Table extends WP_List_Table
     $this->_column_headers = array($columns, $hidden, $sortable);
 
     $data = get_posts(array(
+      'numberposts' => -1,
       'post_type' => 'activiteit',
       'meta_key'    => 'hasform',
       'meta_value'  => true,
@@ -92,9 +93,9 @@ class Submissions_Overview_List_Table extends WP_List_Table
     $this->items = $data;
 
     $this->set_pagination_args(array(
-      'total_items' => $total_items,                  //WE have to calculate the total number of items
-      'per_page'    => $per_page,                     //WE have to determine how many items to show on a page
-      'total_pages' => ceil($total_items / $per_page)   //WE have to calculate the total number of pages
+      'total_items' => $total_items, //WE have to calculate the total number of items
+      'per_page'    => $per_page, //WE have to determine how many items to show on a page
+      'total_pages' => ceil($total_items / $per_page) //WE have to calculate the total number of pages
     ));
   }
 }
