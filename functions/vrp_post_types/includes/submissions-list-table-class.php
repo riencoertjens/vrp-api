@@ -78,7 +78,7 @@ class Submissions_List_Table extends WP_List_Table
   {
     
     if ($column_name === 'post_date') {
-      return date("Y-m-d H:i:s", strtotime("-2h",strtotime(get_the_date( 'Y-m-d h:i:s', $item ))));
+      return date("Y-m-d H:i:s", strtotime("-2h",strtotime(get_the_date( 'Y-m-d H:i:s', $item ))));
     } else {
       $post_content = json_decode($item->post_content, true);
       if(isset($post_content[$column_name])){ //check for value, in case form has been changed during registrations
