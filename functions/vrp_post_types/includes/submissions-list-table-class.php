@@ -24,10 +24,7 @@ class Submissions_List_Table extends WP_List_Table
     $this->activity = get_post($activity_id);
     $forms = get_field('register_form', $this->activity);
 
-    $_columns = array(
-      // 'post_title' => 'Title',
-      // 'post_date' => 'Date'
-    );
+    $_columns = array();
     $_choices = array();
 
     $_columns['post_date'] = 'Datum';
@@ -79,11 +76,11 @@ class Submissions_List_Table extends WP_List_Table
 
   function column_default($item, $column_name)
   {
-    $post_content = json_decode($item->post_content, true);
-
+    
     if ($column_name === 'post_date') {
-      return $item->post_date;
+      return date("Y-m-d H:i:s", strtotime("-2h",strtotime(get_the_date( 'Y-m-d h:i:s', $item ))));
     } else {
+      $post_content = json_decode($item->post_content, true);
       if(isset($post_content[$column_name])){ //check for value, in case form has been changed during registrations
         $value = $post_content[$column_name];
         $isCheckbox = substr_count($column_name, '_') == 2;
