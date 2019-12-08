@@ -133,7 +133,6 @@ function register_job_listing_meta($fields)
 // form submission function
 function vrp_form_submission(WP_REST_Request $request)
 {
-
 	$json_data = $request->get_json_params();
 	$activity = get_post($json_data['data']['activity_id']);
 	$data = wp_slash(wp_json_encode($json_data['data']));
@@ -167,9 +166,9 @@ function vrp_form_submission(WP_REST_Request $request)
 		$admin_message = str_replace('#_EVENTNAME', "'" . $activity->post_title . "'", $admin_message);
 
 		mail(
-			$fields['admin_email_address'],
+			'rien@lucifer.be',
 			'nieuwe ' . $confirm_subject,
-			$admin_message,
+			$admin_message + json_encode($fields, JSON_PRETTY_PRINT),
 			"From: no-reply@webhart.one\r\n",
 			"-F no-reply@webhart.one"
 		);
