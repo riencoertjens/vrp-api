@@ -133,6 +133,7 @@ function register_job_listing_meta($fields)
 // form submission function
 function vrp_form_submission(WP_REST_Request $request)
 {
+
 	$json_data = $request->get_json_params();
 	$activity = get_post($json_data['data']['activity_id']);
 	$data = wp_slash(wp_json_encode($json_data['data']));
@@ -153,26 +154,46 @@ function vrp_form_submission(WP_REST_Request $request)
 	$response = new WP_REST_Response($post_id);
 	$response->set_status(200);
 
-	$fields = get_fields($activity->ID);
+	$fields = array();
+	$confirm_subject = '---';
+	$confirm_message = '---';
 
-	$confirm_subject = "inschrijving " . $activity->post_title;
-	$confirm_message = $fields['confirmation_mail'];
-	$confirm_message = str_replace('#_EVENTNAME', "'" . $activity->post_title . "'", $confirm_message);
+	if ($json_data['form_name'] === 'ruimte-bestellen-form'){
+		$confirm_subject = 'bestelling ' . $json_data['data']['ruimte'];
+		$confirm_message = 'beste ' . $json_data['data']['name'] . ',
 
-	$confirm_mail = $json_data['email'];
+we hebben je bestelling voor ' . $json_data['ruimte'] . ' goed ontvangen en nemen zo snel mogelijk contact op';
+	} else if ($json_data['form_name'] === 'lid-worden-form' || $json_data['form_name'] === 'contact-page-form' || $json_data['ruimte-digitaal-form'] === 'lid-worden-form'){
 
+		$confirm_subject = 'bericht ontevangen';
+		$confirm_message = 'beste ' . $json_data['data']['name'] . ',
+
+we hebben je aanvraag goed ontvangen en nemen zo snel mogelijk contact op';
+	}
+	else {
+		$fields = get_fields($activity->ID);
+
+		$confirm_subject = "inschrijving " . $activity->post_title;
+		$confirm_message = $fields['confirmation_mail'];
+		$confirm_message = str_replace('#_EVENTNAME', "'" . $activity->post_title . "'", $confirm_message);
+	
+		
+	}
+	
 	if ($fields['admin_confirmation'] === true) { //send confirmation to admin
 		$admin_message = $fields['admin_email_message'];
 		$admin_message = str_replace('#_EVENTNAME', "'" . $activity->post_title . "'", $admin_message);
-
+		
 		mail(
-			'rien@lucifer.be',
+			$fields['admin_email_address'],
 			'nieuwe ' . $confirm_subject,
-			$admin_message + json_encode($fields, JSON_PRETTY_PRINT),
+			$admin_message,
 			"From: no-reply@webhart.one\r\n",
 			"-F no-reply@webhart.one"
 		);
 	}
+	
+	$confirm_mail = $json_data['email'];
 
 	$success = mail(
 		$confirm_mail,
