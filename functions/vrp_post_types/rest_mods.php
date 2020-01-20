@@ -168,8 +168,8 @@ we hebben je bestelling voor ' . $json_data['ruimte'] . ' goed ontvangen en neme
 		$confirm_subject = 'Bevestiging registratie';
 		$confirm_message = 'beste ' . $json_data['data']['name'] . ',
 
-Bedankt! We hebben u vraag om lid of abonnee te worden goed ontvangen. U zult binnenkort een factuur ontvangen via e-mail. Het lidmaatschap of abonnement gaat in zodra de factuur betaald is. Als u nog vragen hebt, kunt u steeds terecht bij <a href="mailto:fran.denayer@vrp.be?subject=vraag%20lidmaatschap>fran.denayer@vrp.be</a>.
-Als u graag op de hoogte wil blijven over de VRP en de activiteiten die we organiseren, kunt u intekenen op onze <a href="https://www.vrp.be/nieuwsbrief">nieuwsbrief: https://www.vrp.be/nieuwsbrief</a>
+Bedankt! We hebben u vraag om lid of abonnee te worden goed ontvangen. U zult binnenkort een factuur ontvangen via e-mail. Het lidmaatschap of abonnement gaat in zodra de factuur betaald is. Als u nog vragen hebt, kunt u steeds terecht bij fran.denayer@vrp.be.
+Als u graag op de hoogte wil blijven over de VRP en de activiteiten die we organiseren, kunt u intekenen op onze nieuwsbrief: https://www.vrp.be/nieuwsbrief
 
 Beste groeten,
 Het VRP-Team';
