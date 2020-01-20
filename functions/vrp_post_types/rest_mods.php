@@ -163,9 +163,20 @@ function vrp_form_submission(WP_REST_Request $request)
 		$confirm_message = 'beste ' . $json_data['data']['name'] . ',
 
 we hebben je bestelling voor ' . $json_data['ruimte'] . ' goed ontvangen en nemen zo snel mogelijk contact op';
-	} else if ($json_data['form_name'] === 'lid-worden-form' || $json_data['form_name'] === 'contact-page-form' || $json_data['ruimte-digitaal-form'] === 'lid-worden-form'){
+	} else if ($json_data['form_name'] === 'lid-worden-form'){
 
-		$confirm_subject = 'bericht ontevangen';
+		$confirm_subject = 'Bevestiging registratie';
+		$confirm_message = 'beste ' . $json_data['data']['name'] . ',
+
+Bedankt! We hebben u vraag om lid of abonnee te worden goed ontvangen. U zult binnenkort een factuur ontvangen via e-mail. Het lidmaatschap of abonnement gaat in zodra de factuur betaald is. Als u nog vragen hebt, kunt u steeds terecht bij <a href="mailto:fran.denayer@vrp.be?subject=vraag%20lidmaatschap>fran.denayer@vrp.be</a>.
+Als u graag op de hoogte wil blijven over de VRP en de activiteiten die we organiseren, kunt u intekenen op onze <a href="https://www.vrp.be/nieuwsbrief">nieuwsbrief: https://www.vrp.be/nieuwsbrief</a>
+
+Beste groeten,
+Het VRP-Team';
+
+	} else if ($json_data['form_name'] === 'contact-page-form' || $json_data['form_name'] === 'ruimte-digitaal-form'){
+
+		$confirm_subject = 'bericht ontvangen';
 		$confirm_message = 'beste ' . $json_data['data']['name'] . ',
 
 we hebben je aanvraag goed ontvangen en nemen zo snel mogelijk contact op';
