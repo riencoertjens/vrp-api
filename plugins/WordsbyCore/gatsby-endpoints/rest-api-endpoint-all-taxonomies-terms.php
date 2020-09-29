@@ -33,7 +33,8 @@ function custom_api_get_all_taxonomies_terms_callback($type = null) {
         $taxonomy_types[] = $tax_term;
 
         $terms = get_terms(array(
-            'taxonomy' => $taxonomy
+            'taxonomy' => $taxonomy,
+            'hide_empty' => false
         ));
 
         // update term count

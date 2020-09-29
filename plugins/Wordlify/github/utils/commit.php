@@ -121,6 +121,10 @@ function commit($commit_message, $files) {
 
     } catch (Exception $e) {
         write_log($e); 
+
+        $myFile = fopen("_debug.txt", "w") or die("Unable to open file!");
+        fwrite($myFile, json_encode($e));
+        fclose($myFile);
     }
 }
 
